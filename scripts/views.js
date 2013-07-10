@@ -56,7 +56,7 @@ require([
         if(feature.uri.indexOf('spotify:user') == 0) {
           var album = models.Playlist.fromURI(feature.uri);
           album.load('name').done(function (album) {
-            var player = Image.forPlaylist(album, { title: album.name, player: true, width: 400, height: 120});
+            var player = Image.forPlaylist(album, { title: album.name, player: true, width: 800, height: 320});
           
             item.appendChild(player.node);
           });
@@ -68,10 +68,14 @@ require([
         if(feature.uri.indexOf('spotify:album') == 0) {
           var album = models.Album.fromURI(feature.uri);
           album.load('name').done(function (album) {
-            var player = Image.forAlbum(album, { title: album.name, player: true, width: 400, height: 120});
+            var player = Image.forAlbum(album, { title: album.name, player: true, width: 800, height: 320});
             
           item.appendChild(player.node);
+          console.log(player.node);
+          var img = player.node.getElementsByClassName('sp-image-inset')[0];
+          img.style.backgroundImage = 'url("' + feature.image_url + '")';
           });
+
           contents.appendChild(item);
           console.log(this.node);
         } 

@@ -106,7 +106,7 @@ require([
       
       
           console.log("I", i);
-          if((i % 5) == 0) {
+          if((i % 6) == 0) {
             tr = document.createElement('tr');
             document.getElementById('playlists').appendChild(tr);
           }
@@ -119,12 +119,16 @@ require([
 
           // Create title
           var a = document.createElement('a');
-          a.innerHTML = playlist.name.decodeForText();
+          a.innerHTML = playlist.name.substr(0, 16).decodeForText();
           td.appendChild(a);
 
           var p = document.createElement('p');
           p.classList.add('description');
-          p.innerHTML = playlist.description.decodeForText();
+          if(playlist.description.length > 0) {
+           p.innerHTML = playlist.description.decodeForText();
+         } else {
+          p.innerHTML = qizone.playlists[i].text.decodeForText();
+         }
           td.appendChild(p);
           p.style.width = "120px";
           var subscribeButton = SubscribeButton.forPlaylist(playlist);
