@@ -30,22 +30,41 @@
     <header>
        <a href="spotify:app:qizone" class="nodrag"><img class="logo" src="images/logo.png" /></a>
     </header>
-    <script src="scripts/main.js"></script>
-    
-    
-                <section id="overview">
-                    <div class="sdivider">Featured
-                            </div>
-                    <div id="featured"></div>
-                    <div class="sdivider">Playlists</div>
-
-                    <div class="container">
-                        <div class="row-fluid">
-                            <div class="span1 visible-desktop"></div>
-                            <div class="span9" id="playlists"></div>
-                        </div>
-                    </div>
-                </section>
+    <nav>
+        <div class="container">
+            <div class="row-fluid">
+                <div class="span3" id="img"></div>
+                <div class="span6" id="control"></div>
+            </div>
         </div>
+    </nav>
+    
+    <section id="followers">
+        <nav>w
+        </nav>
+        <div class="sdivider">Followers</div>
+
+                <div class="span0 visible-desktop"></div>
+                    <table cellpadding="12" width="100%" id="users"></table>
+                </div>
+       
+    </section>
+
+    <section id="overview">
+        <div class="sdivider">Featured
+                </div>
+        <div id="featured"></div>
+        <div class="sdivider">Playlists</div>
+
+        <div class="container">
+            <div class="row-fluid">
+                <div class="span0 visible-desktop"></div>
+                <div class="span11">
+                    <table class="playlistcollection" id="playlists"></table>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="scripts/main.js"></script>
   </body>
 </html>

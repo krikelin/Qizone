@@ -2,6 +2,8 @@ html, body {
   overflow: auto;
   margin: 0px;
   padding: 0px;
+  background: url(../images/bg.png);
+  text-shadow: 0px 1px 1px white;
 }
 #featured {
 	padding-top: 20px;
@@ -34,6 +36,41 @@ html, body {
 	border-radius: 4px;
 
 }
+.playlistcollection {
+	border-collapse:separate; border-spacing: 15px;
+}
+.pentry p.description {
+	min-height: 140px;
+}
+.pentry {
+	box-sizing: border-box;
+	padding-bottom: 5px;
+}
+.pentry {
+	vertical-align: top;
+	background: rgba(255, 255, 255, .4);
+	box-shadow: 0px 2px 0px rgba(0, 0, 0, .1);
+}
+a, a:hover {
+	color: black;
+}
+a:hover, a:hover * {
+	text-decoration: underline;
+}
+.userrow {
+	width: 100%;
+	display: block;
+	border-bottom: 1px solid #dddddd;
+}
+nav {
+	background: rgba(255, 255, 255, .5);
+	border-bottom: 1px solid #dddddd;
+	height: 120px;
+	width: 100%;
+	position: relative;
+	font-size: 11px;
+	display: none;
+}
 .sdivider {
 	background: url('../img/sdivider.png');
 	height: 32px;
@@ -42,7 +79,16 @@ html, body {
 	font-weight: bold;
 	padding-top: 8px;
 	text-shadow: 0px 1px 0px white;
+	border-top: 1px solid #cccccc;
+	border-bottom: 1px solid #cccccc;
+	box-shadow: 0px 1px 0px #cccccc;
 	box-sizing: border-box;
+	opacity: 0.5;
+}
+.description {
+	font-size: 11px;
+	font-family: "Tahoma";
+	line-height: 11px;
 }
 .slide div {
 	display: block;

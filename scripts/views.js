@@ -1,4 +1,5 @@
 require([
+  '$api/i18n',
   'strings/main.lang',
   '$api/models',
   '$views/image#Image',
@@ -7,7 +8,7 @@ require([
   'scripts/extern/slab',
   '$views/list#List',
   '$views/buttons#SubscribeButton'
-], function(mainStrings, models, Image, jquery, bootstrap, slab, List, SubscribeButton) {
+], function(i18n, mainStrings, models, Image, jquery, bootstrap, slab, List, SubscribeButton) {
 
   
   function Carousel (features, options) {
@@ -97,7 +98,7 @@ require([
     var self = this;
     this.init = function () {
       console.log("Playlist", self.playlist);
-      self.playlist.load('name', 'image', 'subscribers', 'tracks').done(function (playlist) {
+      self.playlist.load('name', 'image', 'description', 'subscribers', 'tracks').done(function (playlist) {
         
         var td1 = document.createElement('td');
         var td2 = document.createElement('td');
@@ -105,26 +106,32 @@ require([
         self.node.appendChild(td2);
         
         td1.setAttribute('width', '10%');
-        td1.setAttribute('valign', 'top');
+        td1.setAttribute('valign', 'top');sp://8e46e2f2ff49e8471293e896d562d4ead0af6c55.qizone/
         td2.setAttribute('valign', 'top');
 
         var image = Image.forPlaylist(playlist, {placeholder: 'playlist', width: 128, player:true, height: 128});
         td1.appendChild(image.node);
         td2.innerHTML = '<div id="pheader"><a class="title" href="' + playlist.uri + '">' + playlist.name.decodeForText() + "</a></div>";
         var btnSubscribe = SubscribeButton.forPlaylist(playlist);
-        td2.appendChild(btnSubscribe.node);
+        td2.appendChild(btnSubscribe.node);sp://8e46e2f2ff49e8471293e896d562d4ead0af6c55.qizone/spotify:app:qizone:user:qizone:playlist:2KZt7yZYUPpwJE3Kkr8q7Z:followers
         td2.appendChild(document.createElement("br"));
         td2.appendChild(document.createElement("br"));
         console.log("subscribers", playlist.subscribers);
         playlist.subscribers.snapshot().done(function (subscribers) {
 
 
-          var s = '<span class="salut">' + mainStrings.get('followers') + '</span><br /><span class="value">'  + subscribers.length + "</span>"; 
+          var s = '<a href="spotify:app:qizone:user:' + playlist.uri.split(':')[2] + ':playlist:' + playlist.uri.split(':')[4] + ':followers"><span class="salut">' + mainStrings.get('followers') + '</span><br /><span class="value">'  + i18n.number(subscribers.length + 0).decodeForText() + "</span></a>"; 
+          console.log(s);
           var rRight = document.createElement('span');
           rRight.innerHTML = s;
           rRight.style.cssFloat = 'right';
           td2.firstChild.appendChild(rRight);
+
         });
+        var p = document.createElement('p');
+        p.classList.add('description');
+          p.innerHTML = playlist.description.decodeForText();
+          td2.appendChild(p);
         // Create playlist
         var list = new List(playlist.tracks, {throbber: 'hide-content', numItems: 15,  style: 'rounded'});
         td2.appendChild(list.node);
@@ -139,4 +146,28 @@ require([
   
     return new exports.PlayView(playlist);
   };
+
+  exports.UserRow = function (uri) {
+    this.node = document.createElement('tr');
+    this.node.classList.add('userrow');
+    this.node.innerHTML = '<td id="img"></td><td width="100%" id="title"></td><td  id="follow"></td>';
+    var user = models.User.fromURI(uri);
+    var self = this;
+    user.load('image', 'name', 'username').done(function (user) {
+       var p = document.createElement('h3');
+       p.innerHTML = user.name.decodeForText();
+      self.node.querySelector("#title").appendChild(p);
+      var image = Image.forUser(user, {width: 64, height: 64});
+      self.node.querySelector("#img").appendChild(image.node);
+
+      var followButton = SubscribeButton.forProfile(user);
+      self.node.querySelector("#follow").appendChild(followButton.node);
+     
+
+    });
+  };
+  exports.UserRow.forUser = function(user, options) {
+    return new exports.UserRow(user, options);
+  }
+
 });
