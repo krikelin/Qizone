@@ -3,6 +3,52 @@ html, body {
   margin: 0px;
   padding: 0px;
 }
+#featured {
+	padding-top: 20px;
+	padding-bottom: 20px;
+
+}
+.salut {
+	font-weight: thin;
+}
+.salut, .value {
+	text-align: right;
+	float: right;
+}
+.value {
+	font-size: 20px;
+	font-weight: bold;
+
+}
+#features {
+
+	margin-bottom: 0px;
+}
+.slide {
+	width: 600px;
+	margin-left: auto;
+	margin-right: auto;
+	border: 1px solid #dddddd;
+	padding: 5px;
+	background: #fefefe;
+	border-radius: 4px;
+
+}
+.sdivider {
+	background: url('../img/sdivider.png');
+	height: 32px;
+	width: 100%;
+	padding-left: 10%;
+	font-weight: bold;
+	padding-top: 8px;
+	text-shadow: 0px 1px 0px white;
+	box-sizing: border-box;
+}
+.slide div {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
 header {
 	height: 60px;
 	background: -webkit-linear-gradient(90deg, #225500, #77a800);
