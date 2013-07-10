@@ -4,8 +4,9 @@ require([
   'scripts/qizone#Qizone',
   '$views/tabbar#TabBar',
   'scripts/jquery-1.10.2.min',
-  'scripts/bootstrap'
-], function(mainStrings, models, Qizone, TabBar, bootstrap) {
+  'scripts/bootstrap',
+  'scripts/views#Carousel'
+], function(mainStrings, models, Qizone, TabBar, jquery, bootstrap, Carousel) {
   'use strict';
   var tabBar = TabBar.withTabs([
     {id: 'overview', name: 'Overview', active: true},
@@ -37,7 +38,10 @@ require([
   var qizone = Qizone.fromURI("spotify:qizone:localhost:qizone:ws");
   console.log(qizone);
   qizone.load('playlists', 'artists', 'features', 'releases').done(function (qizone) {
-    alert("A");
     console.log("I'm here", qizone);
-  }).always(function (qizone) {console.log("A")});
+    console.log(Carousel);
+    var features = Carousel.forFeatures(qizone.features.features, {});
+    features.init();
+    document.getElementById('featured').appendChild(features.node);
+  }).always(function (qizone) {});
 });
