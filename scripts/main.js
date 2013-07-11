@@ -9,8 +9,10 @@ require([
   'scripts/views#PlayView',
   '$views/image#Image',
   '$views/buttons#SubscribeButton',
-  'scripts/views#UserRow'
-], function(mainStrings, models, Qizone, TabBar, jquery, bootstrap, Carousel, PlayView, Image, SubscribeButton, UserRow) {
+  'scripts/views#UserRow',
+  'scripts/views#PlaylistGrid',
+  'scripts/views#PlaylistView'
+], function(mainStrings, models, Qizone, TabBar, jquery, bootstrap, Carousel, PlayView, Image, SubscribeButton, UserRow, PlaylistGrid, PlaylistView) {
   'use strict';
   var tabBar = TabBar.withTabs([
     {id: 'overview', name: 'Overview', active: true},
@@ -43,7 +45,14 @@ require([
       var action = args[4];
       if(entity === 'user') {
         var playlist = models.Playlist.fromURI('spotify:user:' + user + ':playlist:' + id);
-         
+        if(action === 'playlist') {
+
+          document.querySelector('#playlistview').innerHTML = "";
+          var playlistView = PlaylistView.forPlaylist(playlist);
+          playlistView.init();
+          console.log(playlistView.node);
+          document.querySelector('#playlistview').appendChild(playlistView.node);
+        }
         if(action === 'followers') {
            document.querySelector('#users').innerHTML = "";
           playlist.load('subscribers', 'name').done(function (playlist) {
@@ -62,7 +71,7 @@ require([
       }
     }
   }catch(e) {
-    console.log(e);
+    throw e;
   }
   }
   setSection("overview");
@@ -86,7 +95,7 @@ require([
 
   navigate([{data:{arguments:['overview']}}]);
 
-  var qizone = Qizone.fromURI("spotify:qizone:ws.qizone.se");
+  var qizone = Qizone.fromURI("spotify:qizone:localhost:qizone:ws");
   console.log(qizone);
   qizone.load('playlists', 'artists', 'features', 'releases').done(function (qizone) {
     console.log("I'm here", qizone);
@@ -95,7 +104,13 @@ require([
     features.init();
     document.getElementById('featured').appendChild(features.node);
     console.log(qizone.playlists);
-    var tr = document.createElement('tr');
+
+    var playlistGrid = PlaylistGrid.forPlaylists(qizone.playlists);
+    playlistGrid.init();
+    console.log(playlistGrid.node);
+    document.querySelector('#playlists').appendChild(playlistGrid.node);
+
+    /*var tr = document.createElement('tr');
     var pls = [];
     for(var i = 0; i < qizone.playlists.length; i++) {
       pls.push(models.Playlist.fromURI(qizone.playlists[i].uri).load('name', 'description', 'image'));
@@ -138,7 +153,8 @@ require([
 
       }
     });
-    var user = models.Profile.fromURI("spotify:user:qizone");
+    */
+   var user = models.Profile.fromURI("spotify:user:qizone");
     user.load('image', 'name').done(function (user) {
        var p = document.createElement('h3');
        p.innerHTML = user.name.decodeForText();

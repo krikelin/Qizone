@@ -62,6 +62,21 @@ a:hover, a:hover * {
 	display: block;
 	border-bottom: 1px solid #dddddd;
 }
+table tr:first td {
+	padding: 20px;
+}
+table.playlist {
+
+	
+}
+table.playlist td {
+	vertical-align: top;
+}
+.grid li {
+	float:left;
+	list-style-type:none;
+	margin:12px;
+}
 nav {
 	background: rgba(255, 255, 255, .5);
 	border-bottom: 1px solid #dddddd;

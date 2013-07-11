@@ -172,6 +172,130 @@ require([
   };
   exports.UserRow.forUser = function(user, options) {
     return new exports.UserRow(user, options);
-  }
+  };
 
+  /** PlaylistGridView */
+  exports.PlaylistGrid = function (playlists) {
+    this.playlists = playlists;
+    this.node = document.createElement('ul');
+    this.node.classList.add('grid');
+    var self = this;
+    this.init = function () {
+      var tr = document.createElement('tr');
+      console.log(playlists);
+      var pls = [];
+      for(var i = 0; i < playlists.length; i++) {
+        console.log(playlists[i]);
+        pls.push(models.Playlist.fromURI(self.playlists[i].uri).load('name', 'description', 'image'));
+      }
+      models.Promise.join(pls).done(function (playlists) {
+      
+        console.log("F");
+        console.log(playlists);
+        for(var i = 0; i < playlists.length; i++) {
+          var playlist = playlists[i];
+        
+        
+            console.log("I", i);
+           
+            var td = document.createElement('li');
+            td.classList.add('pentry');
+            td.style.textAlign = "center";
+            var image = Image.forPlaylist(playlist, {width:128, height: 128, player: true, style: 'rounded', title: playlist.name});
+            td.appendChild(image.node);
+           
+
+            // Create title
+            var a = document.createElement('a');
+            a.innerHTML = playlist.name.substr(0, 16).decodeForText();
+            a.setAttribute('href', playlist.uri.replace('spotify:', 'spotify:app:qizone:') + ':playlist');
+            td.appendChild(a);
+
+            var p = document.createElement('p');
+            p.classList.add('description');
+            if(playlist.description.length > 0) {
+              p.innerHTML = playlist.description.decodeForText();
+            } else {
+              p.innerHTML = self.playlists[i].text.decodeForText();
+            }
+            td.appendChild(p);
+            p.style.width = "120px";
+            var subscribeButton = SubscribeButton.forPlaylist(playlist);
+            self.node.appendChild(td);
+            console.log("T");
+
+        }
+      });
+      var user = models.Profile.fromURI("spotify:user:qizone");
+      user.load('image', 'name').done(function (user) {
+         var p = document.createElement('h3');
+         p.innerHTML = user.name.decodeForText();
+          document.querySelector("#control").appendChild(p);
+        var image = Image.forProfile(user, {width: 94, height: 94});
+        document.querySelector("#img").appendChild(image.node);
+
+        var followButton = SubscribeButton.forProfile(user);
+        document.querySelector("#control").appendChild(followButton.node);
+       
+
+      });
+    };
+  };
+
+  exports.PlaylistGrid.forPlaylists = function (collection, options) {
+    return new exports.PlaylistGrid(collection, options);
+  };
+  exports.PlaylistView = function(playlist, options) {
+    this.playlist = playlist;
+    this.node = document.createElement('table');
+    this.node.classList.add('pentry');
+    var self = this;
+    self.node.classList.add('playlist');
+    /*self.node.innerHTML = '<tr>\
+          <td id="image"></td>\
+          <td id="header">\
+            <a href="" id="title"></a>\
+            <div id="toolbar"></div>
+            <div class="description" id="description"></div>\
+          </td>\
+          <td id="stats"></td>\
+        </tr>\
+        <tr>\
+          <td id="list" colspan="3"></td>\
+        </tr>';*/
+    this.init = function () {
+      self.playlist.load('name', 'subscribers', 'description', 'image', 'tracks').done(function (playlist) {
+
+        var list = null;
+        var image = null;
+        var subscribeButton = null;
+        if(playlist instanceof models.Playlist) {
+          list = List.forPlaylist(playlist);
+          image = Image.forPlaylist(playlist, {width:256, height: 256, player:true, header:'fixed'});
+          subscribeButton = SubscribeButton.forPlaylist(playlist);
+        }
+        var tr1 = document.createElement('tr');
+        var tr2 = document.createElement('tr');
+        tr1.innerHTML = '<td id="image" width="256"></td><td colspan="2"><a id="title"></a><div id="toolbar"></div><div id="description"></div></td><td id="followers"></td>';
+        tr2.innerHTML = '<td id="list" colspan="4"></td>';
+        self.node.appendChild(tr1);
+        self.node.appendChild(tr2);
+        console.log(playlist);
+        playlist.subscribers.snapshot().done(function (subscribers) {
+          var s = '<a href="spotify:app:qizone:user:' + playlist.uri.split(':')[2] + ':playlist:' + playlist.uri.split(':')[4] + ':followers"><span class="salut">' + mainStrings.get('followers') + '</span><br /><span class="value">'  + i18n.number(subscribers.length + 0).decodeForText() + "</span></a>"; 
+          self.node.querySelector('#followers').innerHTML = s;
+        });
+        list.init();
+        self.node.querySelector('#list').appendChild(list.node);
+        self.node.querySelector('#image').appendChild(image.node);
+        self.node.querySelector('#title').innerHTML = playlist.name.decodeForHtml();
+        self.node.querySelector('#toolbar').appendChild(subscribeButton.node);
+          
+      });
+    };
+
+  };
+  exports.PlaylistView.forPlaylist = function (playlist, options) {
+    return new exports.PlaylistView(playlist, options);
+  }
 });
