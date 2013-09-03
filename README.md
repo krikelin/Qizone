@@ -1,9 +1,11 @@
-boilerplate-app
+Qizone: Music curation Spotify Apps Boilerplate
 ===============
 
 This is a boilerplate app that contains the minimum required code to create
 a Spotify app. It also contains a few simple examples of how to use some of
 our APIs.
+
+This is an extension to the boilerplate aimed as a starting point for people who are willing to make their own music curation service like Tunigo (nowmore Browse) or Digster!
 
 To test the application your Spotify account needs to have the developer flag
 set. You can find out how to activate the developer flag [here](https://developer.spotify.com/technologies/apps/#developer-account).
@@ -30,6 +32,10 @@ Find out more about localization in our [Spotify Developer Guidelines](http://de
 
 * **[scripts/playlist-example.js](https://github.com/spotify/boilerplate-app/blob/master/scripts/playlist-example.js)** shows how to create a playlist for an album.
 Find out more about playlists in the [Views Framework documentation](https://developer.spotify.com/technologies/apps/docs/preview/views/list.html).
+
+* **[scripts/qizone.js](http://github.com/krikelin/Qizone/blob/master/scripts/qizone.js). Contains scripts to connect to the backend service for the build.
+
+* **[scripts/views.js](http://github.com/krikelin/Qizone/blog/master/scripts/views.js)** Specialized widgets for playlist curation services, like tables, playlist view etc.
 
 Helpful links:
 
